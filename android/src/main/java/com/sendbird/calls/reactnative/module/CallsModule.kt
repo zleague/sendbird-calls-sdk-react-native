@@ -19,6 +19,7 @@ class CallsModule(val reactContext: ReactApplicationContext) : CallsModuleStruct
     val groupCallModule = CallsGroupCallModule()
     val commonModule = CallsCommonModule(this)
     val queries = CallsQueries(this)
+    var currentRoom = "";
 
     fun invalidate(handler: CompletionHandler?) {
         SendBirdCall.Options.removeDirectCallSound(SendBirdCall.SoundType.RINGING)
@@ -27,6 +28,9 @@ class CallsModule(val reactContext: ReactApplicationContext) : CallsModuleStruct
         SendBirdCall.Options.removeDirectCallSound(SendBirdCall.SoundType.RECONNECTING)
 
         if(initialized) {
+            if (currentRoom != "") {
+                groupCallModule.exit(currentRoom);
+            }
             Log.d(NAME, "[CallsModule] invalidate()")
             SendBirdCall.removeAllListeners()
             SendBirdCall.removeAllRecordingListeners()
@@ -88,8 +92,14 @@ class CallsModule(val reactContext: ReactApplicationContext) : CallsModuleStruct
     override fun updateRemoteVideoView(callId: String, videoViewId: Int)= directCallModule.updateRemoteVideoView(callId, videoViewId)
 
     /** GroupCall module interface**/
-    override fun enter(roomId: String, options: ReadableMap, promise: Promise) = groupCallModule.enter(roomId, options, promise)
-    override fun exit(roomId: String) = groupCallModule.exit(roomId)
+    override fun enter(roomId: String, options: ReadableMap, promise: Promise) {
+        currentRoom = roomId;
+        return groupCallModule.enter(roomId, options, promise)
+    }
+    override fun exit(roomId: String) {
+        currentRoom = "";
+        return groupCallModule.exit(roomId)
+    }
 
     /** Queries **/
     fun createDirectCallLogListQuery(params: ReadableMap, promise: Promise) = queries.createDirectCallLogListQuery(params, promise)

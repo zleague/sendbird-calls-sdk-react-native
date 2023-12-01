@@ -20,6 +20,7 @@ class CallsBaseModule: NSObject {
 
 class CallsModule: SendBirdCallDelegate {
     internal var queries = CallsQueries()
+    internal var currentRoomId = "";
     
     internal lazy var commonModule: CallsCommonModule = {
         CallsCommonModule(root: self)
@@ -50,6 +51,12 @@ class CallsModule: SendBirdCallDelegate {
         SendBirdCall.removeDirectCallSound(forType: .reconnecting)
         
         if(initialized){
+            if (currentRoomId != "") {
+                var room = SendBirdCall.getCachedRoom(by: currentRoomId)
+                CallsUtils.safeRun {
+                    try room?.exit();
+                }
+            }
             SendBirdCall.deauthenticate(completionHandler: nil)
             SendBirdCall.removeAllDelegates()
             SendBirdCall.removeAllRecordingDelegates()
@@ -197,10 +204,12 @@ extension CallsModule: CallsDirectCallModuleProtocol {
 // MARK: GroupCallModule extension
 extension CallsModule: CallsGroupCallModuleProtocol {
     func enter(_ roomId: String, _ options: [String : Any?], _ promise: Promise) {
+        currentRoomId = roomId;
         groupCallModule.enter(roomId, options, promise)
     }
     
     func exit(_ roomId: String) {
+        currentRoomId = "";
         groupCallModule.exit(roomId)
     }
 }

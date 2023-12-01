@@ -2,12 +2,18 @@ package com.sendbird.calls.reactnative
 
 import android.util.Log
 import com.facebook.react.bridge.*
+import com.facebook.react.module.annotations.ReactModule
 import com.sendbird.calls.SendBirdCall
 import com.sendbird.calls.reactnative.module.CallsModule
 import com.sendbird.calls.reactnative.module.CallsModuleStruct
 
+
+@ReactModule(name = RNSendbirdCallsModule.NAME)
 class RNSendbirdCallsModule(private val reactContext: ReactApplicationContext) : ReactContextBaseJavaModule(reactContext),
     CallsModuleStruct {
+    companion object {
+        const val NAME = "RNSendbirdCalls"
+    }
     private var module = CallsModule(reactContext)
 
     override fun getName(): String {
@@ -21,6 +27,12 @@ class RNSendbirdCallsModule(private val reactContext: ReactApplicationContext) :
     // For backward compat instead of invalidate
     @Deprecated("Deprecated in Java")
     override fun onCatalystInstanceDestroy() {
+        this.module.invalidate(null)
+        this.module = CallsModule(reactContext)
+    }
+
+    override fun invalidate() {
+        super.invalidate();
         this.module.invalidate(null)
         this.module = CallsModule(reactContext)
     }
