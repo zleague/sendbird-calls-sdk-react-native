@@ -24,6 +24,16 @@ export type NativeConstants = {
   NATIVE_SDK_VERSION: string;
 };
 
+export type AVAudioSessionMode =
+  | 'default'
+  | 'videoChat'
+  | 'voiceChat'
+  | 'gameChat'
+  | 'videoRecording'
+  | 'measurement'
+  | 'moviePlayback'
+  | 'spokenAudio';
+
 export interface NativeCommonModule {
   applicationId: string;
   currentUser: User | null;
@@ -55,6 +65,7 @@ export interface NativeCommonModule {
   unregisterVoIPPushToken(token: string): Promise<void>;
   /** @platform iOS **/
   routePickerView(): void;
+  setAudioSessionMode(mode: AVAudioSessionMode): void;
 
   // unregisterAllPushTokens(): Promise<void>;
   // addRecordingListener
@@ -63,7 +74,11 @@ export interface NativeCommonModule {
 }
 
 type CommonModule_AndroidSpecificKeys = 'handleFirebaseMessageData';
-type CommonModule_IOSSpecificKeys = 'registerVoIPPushToken' | 'unregisterVoIPPushToken' | 'routePickerView';
+type CommonModule_IOSSpecificKeys =
+  | 'registerVoIPPushToken'
+  | 'unregisterVoIPPushToken'
+  | 'routePickerView'
+  | 'setAudioSessionMode';
 export enum ControllableModuleType {
   DIRECT_CALL = 'DIRECT_CALL',
   GROUP_CALL = 'GROUP_CALL',

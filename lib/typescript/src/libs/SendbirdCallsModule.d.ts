@@ -1,4 +1,4 @@
-import type { AuthenticateParams, CallOptions, DirectCallLogQueryParams, DirectCallProperties, RoomListQueryParams, RoomParams, SendbirdCallListener, SendbirdCallsJavascriptSpec, User } from '../types';
+import type { AVAudioSessionMode, AuthenticateParams, CallOptions, DirectCallLogQueryParams, DirectCallProperties, RoomListQueryParams, RoomParams, SendbirdCallListener, SendbirdCallsJavascriptSpec, User } from '../types';
 import { NativeConstants, RoomState, RoomType, SoundType } from '../types';
 import { DirectCallLogListQuery, RoomListQuery } from './BridgedQuery';
 import { DirectCall } from './DirectCall';
@@ -214,6 +214,7 @@ export default class SendbirdCallsModule implements SendbirdCallsJavascriptSpec 
      * @since 1.0.0
      */
     ios_routePickerView: () => void;
+    ios_setAudioSessionMode: (mode: AVAudioSessionMode) => void;
     /**
      * Handles Firebase message data.
      * Returns true if Sendbird call message. Otherwise false.

@@ -38,11 +38,43 @@ class RNSendbirdCalls: RCTEventEmitter {
     @objc func handleRemoteNotificationData(data: [AnyHashable: Any]) {
         SendBirdCall.application(UIApplication.shared, didReceiveRemoteNotification: data)
     }
+
+    @objc func setAudioSessionMode(_ mode: String) {
+        let mode = audioSessionMode(from: mode)
+
+        try? AVAudioSession.sharedInstance().setCategory(.playAndRecord)
+        try? AVAudioSession.sharedInstance().setMode(mode)
+        try? AVAudioSession.sharedInstance().setActive(true)
+    }
+    
+    
+    func audioSessionMode(from string: String) -> AVAudioSession.Mode {
+        switch string.lowercased() {
+        case "default":
+            return .default
+        case "voicechat":
+            return .voiceChat
+        case "gamechat":
+            return .gameChat
+        case "videochat":
+            return .videoChat
+        case "measurement":
+            return .measurement
+        case "movieplayback":
+            return .moviePlayback
+        case "spokenaudio":
+            return .spokenAudio
+        case "videorecording":
+            return .videoRecording
+        default:
+            return .default
+        }
+    }
     
     @objc func routePickerView() {
         guard #available(iOS 11.0, *),
               let routePickerView = SendBirdCall.routePickerView(frame: .zero) as? AVRoutePickerView,
-              let button = routePickerView.subviews.first(where: { $0 is UIButton }) as? UIButton
+              let button = routePickerView.subviews.last(where: { $0 is UIButton }) as? UIButton
         else { return }
         
         button.sendActions(for: .touchUpInside)
@@ -210,5 +242,10 @@ extension RNSendbirdCalls {
     
     @objc func selectVideoDevice(_ type: String, _ identifier: String, _ device: [String: String], _ resolve: @escaping RCTPromiseResolveBlock, _ reject: @escaping RCTPromiseRejectBlock) {
         module.selectVideoDevice(type, identifier, device, Promise(resolve, reject))
+    }
+    
+    
+    @objc func enableSpeakerPhone(_ enabled: Bool) {
+        
     }
 }

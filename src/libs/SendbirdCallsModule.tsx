@@ -2,6 +2,7 @@ import { Platform } from 'react-native';
 
 import pkg from '../../package.json';
 import type {
+  AVAudioSessionMode,
   AuthenticateParams,
   CallOptions,
   DirectCallLogQueryParams,
@@ -349,6 +350,11 @@ export default class SendbirdCallsModule implements SendbirdCallsJavascriptSpec 
   public ios_routePickerView = () => {
     if (Platform.OS !== 'ios') return;
     this.binder.nativeModule.routePickerView();
+  };
+
+  public ios_setAudioSessionMode = (mode: AVAudioSessionMode) => {
+    if (Platform.OS !== 'ios') return;
+    this.binder.nativeModule.setAudioSessionMode(mode);
   };
 
   /**

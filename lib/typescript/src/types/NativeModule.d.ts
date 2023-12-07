@@ -11,6 +11,7 @@ declare type NativeModuleInterface = NativeModule & TurboModule;
 export declare type NativeConstants = {
     NATIVE_SDK_VERSION: string;
 };
+export declare type AVAudioSessionMode = 'default' | 'videoChat' | 'voiceChat' | 'gameChat' | 'videoRecording' | 'measurement' | 'moviePlayback' | 'spokenAudio';
 export interface NativeCommonModule {
     applicationId: string;
     currentUser: User | null;
@@ -37,9 +38,10 @@ export interface NativeCommonModule {
     unregisterVoIPPushToken(token: string): Promise<void>;
     /** @platform iOS **/
     routePickerView(): void;
+    setAudioSessionMode(mode: AVAudioSessionMode): void;
 }
 declare type CommonModule_AndroidSpecificKeys = 'handleFirebaseMessageData';
-declare type CommonModule_IOSSpecificKeys = 'registerVoIPPushToken' | 'unregisterVoIPPushToken' | 'routePickerView';
+declare type CommonModule_IOSSpecificKeys = 'registerVoIPPushToken' | 'unregisterVoIPPushToken' | 'routePickerView' | 'setAudioSessionMode';
 export declare enum ControllableModuleType {
     DIRECT_CALL = "DIRECT_CALL",
     GROUP_CALL = "GROUP_CALL"

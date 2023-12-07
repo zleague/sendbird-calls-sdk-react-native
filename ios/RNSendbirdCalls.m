@@ -21,6 +21,7 @@ RCT_EXTERN_METHOD(handleRemoteNotificationData
 
 RCT_EXTERN_METHOD(routePickerView)
 
+RCT_EXTERN_METHOD(setAudioSessionMode : (NSString *)mode)
 
 // MARK: - SendbirdCalls: Queries
 RCT_EXTERN_METHOD(createDirectCallLogListQuery
