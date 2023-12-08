@@ -43,6 +43,9 @@ class RNSendbirdCalls: RCTEventEmitter {
         let mode = audioSessionMode(from: mode)
 
         try? AVAudioSession.sharedInstance().setCategory(.playAndRecord)
+        
+        try? AVAudioSession.sharedInstance().setPreferredSampleRate(44100.0)
+        try? AVAudioSession.sharedInstance().setPreferredIOBufferDuration(0.005)
         try? AVAudioSession.sharedInstance().setMode(mode)
         try? AVAudioSession.sharedInstance().setActive(true)
     }
